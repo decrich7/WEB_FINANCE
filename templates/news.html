@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Добавление Портфеля</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.name_portfel.label }}<br>
+            {{ form.name_portfel(class="form-control") }}<br>
+            {% for error in form.name_portfel.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.goriz.label }}<br>
+            {% for subfield in form.goriz %}
+              <tr>
+                  <td>{{ subfield }}</td>
+                  <td>{{ subfield.label }}</td>
+              </tr><br>
+            {% endfor %}
+
+        </p>
+
+        <p>
+            {{ form.short.label }}<br>
+            {% for subfield in form.short %}
+              <tr>
+                  <td>{{ subfield }}</td>
+                  <td>{{ subfield.label }}</td>
+              </tr><br>
+            {% endfor %}
+
+        </p>
+        <p>
+            {{ form.money.label }}<br>
+            {{ form.money(class="form-control") }}<br>
+            {% for error in form.money.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.tikets.label }}<br>
+            {{ form.tikets(class="form-control") }}<br>
+            {% for error in form.tikets.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </p>
+
+
+        <p>{{ form.is_private() }} {{ form.is_private.label }}</p>
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        {{ message }}
+    </form>
+{% endblock %}

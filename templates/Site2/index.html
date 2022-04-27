@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Состав портфеля&nbsp;💼">
+    <meta name="description" content="">
+    <meta name="page_type" content="np-template-header-footer-from-plugin">
+    <title>Главная</title>
+    <link rel="stylesheet" href="/static/nicepage1.css" media="screen">
+<link rel="stylesheet" href="/static/Главная1.css" media="screen">
+    <script class="u-script" type="text/javascript" src="/static/jquery1.js" defer=""></script>
+    <script class="u-script" type="text/javascript" src="/static/nicepage1.js" defer=""></script>
+    <meta name="generator" content="Nicepage 4.8.2, nicepage.com">
+    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
+    
+    
+    
+    
+    <script type="application/ld+json">{
+		"@context": "http://schema.org",
+		"@type": "Organization",
+		"name": ""
+}</script>
+    <meta name="theme-color" content="#478ac9">
+    <meta property="og:title" content="Главная">
+    <meta property="og:type" content="website">
+  </head>
+  <body data-home-page="Главная.html" data-home-page-title="Главная" class="u-body u-xl-mode">
+    <section class="u-clearfix u-image u-section-1" id="sec-265f" data-image-width="2048" data-image-height="1536">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <h1 class="u-text u-text-default u-text-1">Состав портфеля&nbsp;💼 </h1>
+        <a href="https://nicepage.com/c/text-button-html-templates" class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-6 u-btn-1">Выгрузить в CSV</a>
+        <div class="u-table u-table-responsive u-table-1">
+         <h5 style="padding-top: 1px;">Формирование портфеля по<br> минимальной волатильности</h5>
+          <table>
+            <colgroup>
+              <col width="49.7%">
+              <col width="50.3%">
+            </colgroup>
+            <tbody>
+              <tr style="height: 64px;">
+                <th>Акция</th>
+                <th>Количество</th>
+              </tr>
+          {% for item in list_sharp %}
+              <tr style="height: 65px;">
+                <td>{{item[0]}}</td>
+                <td>{{item[1]}}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="u-table u-table-responsive u-table-2">
+          <h5 style="padding-top: 1px;">Формирование портфеля по<br> максимальному коэфициенту Шарпа</h5>
+          <table style="margin-top: 30px;">
+            <colgroup>
+              <col width="50%">
+              <col width="50%">
+            </colgroup>
+            <tbody >
+              <tr style="margin-top: 10px;">
+                <th>Акция</th>
+                <th>Количество</th>
+              </tr>
+
+          {% for item in list_vol %}
+              <tr style="height: 65px;">
+                <td>{{item[0]}}</td>
+                <td>{{item[1]}}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <a href="/main_page" class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-6 u-btn-2">Главная</a>
+      </div>
+    </section>
+
+  </body>
+</html>
