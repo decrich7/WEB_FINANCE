@@ -33,7 +33,7 @@ class Briefcase(Resource):
         # print(id_user)
         # news = db_sess.query(News).filter(News.user_id == int(id_user))
         # for i in news:
-            # print(i.money)
+        # print(i.money)
         print(1)
         return 'ok'
 
@@ -48,23 +48,21 @@ class Briefcase(Resource):
             'is_private': args['is_private'],
             'id_user': args['id_user']
         }
-
-
-        db_sess = db_session.create_session()
-        news = News()
-        current_user = db_sess.query(User).filter(User.id == data['id_user']).first()
-        news.name_portfel = data['name_portfel']
-        news.tikets = data['tikets']
-        news.is_private = True if data['is_private'] == 'True' else False
-        news.horiz = int(str(data['length_invest_horizon']).split()[0])
-        news.short = bool(data['shorts'])
-        news.short = True if data['shorts'] == 'True' else False
-        news.id_file = current_user.id
-        news.money = data['budget']
-        current_user.news.append(news)
-        db_sess.merge(current_user)
-        db_sess.commit()
-
+        #
+        # db_sess = db_session.create_session()
+        # news = News()
+        # current_user = db_sess.query(User).filter(User.id == data['id_user']).first()
+        # news.name_portfel = data['name_portfel']
+        # news.tikets = data['tikets']
+        # news.is_private = True if data['is_private'] == 'True' else False
+        # news.horiz = int(str(data['length_invest_horizon']).split()[0])
+        # news.short = bool(data['shorts'])
+        # news.short = True if data['shorts'] == 'True' else False
+        # news.id_file = current_user.id
+        # news.money = data['budget']
+        # current_user.news.append(news)
+        # db_sess.merge(current_user)
+        # db_sess.commit()
 
         if int(data['length_invest_horizon']) == 1:
             mon_stoks = int(data['budget']) * 0.2
@@ -79,8 +77,29 @@ class Briefcase(Resource):
         sharp = stock.sharp()
         profit = stock.profit()
         volatility = stock.volatility()
+
+
+
+        db_sess = db_session.create_session()
+        news = News()
+        current_user = db_sess.query(User).filter(User.id == data['id_user']).first()
+        news.name_portfel = data['name_portfel']
+        news.tikets = data['tikets']
+        news.is_private = True if data['is_private'] == 'True' else False
+        news.horiz = int(str(data['length_invest_horizon']).split()[0])
+        news.short = bool(data['shorts'])
+        news.short = True if data['shorts'] == 'True' else False
+        news.id_file = current_user.id
+        news.yield_persent = profit
+        news.money = data['budget']
+        current_user.news.append(news)
+        db_sess.merge(current_user)
+        db_sess.commit()
+
+
         dict_data = {
             'success': 'OK',
+            'id': db_sess.query(News).filter(News.user_id == data['id_user'])[-1].id,
             'time': dt.datetime.now().strftime("%d-%m-%Y"),
             'stoks': {
                 'volatility': {
@@ -94,7 +113,10 @@ class Briefcase(Resource):
             },
             'yield': profit,
         }
-        with open(f'json_data/{current_user.id}.json', 'w') as cat_file:
+
+        with open(
+                f"json_data/{current_user.id}_{db_sess.query(News).filter(News.user_id == data['id_user'])[-1].id}.json",
+                'w') as cat_file:
             json.dump(dict_data, cat_file)
         return jsonify(dict_data)
 

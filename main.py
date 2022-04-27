@@ -39,7 +39,7 @@ def add_news():
     form = NewsForm()
     if form.validate_on_submit():
 
-        print(post('http://127.0.0.1:5000/api/v2/briefcase', json={
+        r = post('http://127.0.0.1:5000/api/v2/briefcase', json={
                     'length_invest_horizon': int(str(form.goriz.data).split()[0]),
                     'budget': form.money.data,
                     'shorts': True if form.short.data == 'Да' else False,
@@ -47,7 +47,7 @@ def add_news():
                     'tikets': form.tikets.data,
                     'is_private': form.is_private.data,
                     'id_user': flask_login.current_user.id
-                }).content)
+                }).json()
         # db_sess = db_session.create_session()
         # news = News()
         # news.name_portfel = form.name_portfel.data
@@ -60,15 +60,15 @@ def add_news():
         # current_user.news.append(news)
         # db_sess.merge(current_user)
         # db_sess.commit()
-        return redirect('/info')
+        return redirect(f'/info/{r["id"]}')
     return render_template('news.html', title='Добавление новости', form=form)
 
 
 
 
-@app.route('/info', methods=['GET', 'POST'])
+@app.route('/info/<int:id>', methods=['GET', 'POST'])
 @login_required
-def info():
+def info(id):
     # db_sess = db_session.create_session()
     # news = db_sess.query(News).filter((News.user == current_user) | (News.is_private != True))
     # print(current_user)
@@ -77,7 +77,7 @@ def info():
     # return render_template('news.html', title='Добавление новости')
     # print(flask_login.current_user.id)
 
-    with open(f'json_data/{flask_login.current_user.id}.json') as cat_file:
+    with open(f'json_data/{flask_login.current_user.id}_{id}.json') as cat_file:
         data = json.load(cat_file)
         price = list()
         price_vol = list()
@@ -119,26 +119,43 @@ def news_delete(id):
 @app.route('/news/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_news(id):
-    form = NewsForm()
-    if request.method == "GET":
-        db_sess = db_session.create_session()
-        news = db_sess.query(News).filter(News.id == id, News.user == current_user).first()
-        if news:
-            form.name_portfel.data = news.name_portfel
-            form.is_private.data = news.is_private
-        else:
-            abort(404)
-    if form.validate_on_submit():
-        db_sess = db_session.create_session()
-        news = db_sess.query(News).filter(News.id == id, News.user == current_user).first()
-        if news:
-            news.name_portfel = form.name_portfel.data
-            news.is_private = form.is_private.data
-            db_sess.commit()
-            return redirect('/')
-        else:
-            abort(404)
-    return render_template('news.html', title='Редактирование новости', form=form)
+    # form = NewsForm()
+    # if request.method == "GET":
+    #     db_sess = db_session.create_session()
+    #     news = db_sess.query(News).filter(News.id == id, News.user == current_user).first()
+    #     if news:
+    #         form.name_portfel.data = news.name_portfel
+    #         form.is_private.data = news.is_private
+    #     else:
+    #         abort(404)
+    # if form.validate_on_submit():
+    #     db_sess = db_session.create_session()
+    #     news = db_sess.query(News).filter(News.id == id, News.user == current_user).first()
+    #     if news:
+    #         news.name_portfel = form.name_portfel.data
+    #         news.is_private = form.is_private.data
+    #         db_sess.commit()
+    #         return redirect('/')
+    #     else:
+    #         abort(404)
+
+    with open(f'json_data/{flask_login.current_user.id}_{id}.json') as cat_file:
+        data = json.load(cat_file)
+        price = list()
+        price_vol = list()
+        stoks = data["stoks"]
+        for i, k in stoks.get('sharp').get('stoks_and_count').items():
+            s = [i, k]
+            price.append(s)
+
+        for v, k in stoks.get('volatility').get('stoks_and_count').items():
+            s = [v, k]
+            price_vol.append(s)
+        print(price)
+    return render_template('Site2/index.html', list_sharp=price, list_vol=price_vol)
+
+
+    # return render_template('news.html', title='Редактирование новости', form=form)
 
 
 @app.route("/")

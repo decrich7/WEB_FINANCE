@@ -6,18 +6,18 @@
         <a href="news" class="btn btn-secondary">Добавить Портфель</a>
     {% endif %}
     {% for item in news %}
-        <div class="col-md6 border rounded">
+        <div class="col-md6 border rounded" style="margin-top: 20px;">
             <h2>{{ item.title }}</h2>
             <div>
                 {{ item.content }}
             </div>
             <div>
-                Автор - {{ item.user.name }}, Дата написания - {{ item.created_date }}
+                Бюджет портфеля - {{ item.money }}, Годовая доходность - {{ item.yield_persent }}
             </div>
             {% if current_user.is_authenticated and current_user == item.user %}
                 <div>
-                    <a href="/news/{{ item.id }}" class="btn btn-warning">Изменить</a>
-                    <a href="/news_delete/{{ item.id }}" class="btn btn-danger">Удалить</a>
+                    <a href="/news/{{ item.id }}" class="btn btn-warning">Посмотреть портфель</a>
+                    <a href="/news_delete/{{ item.id }}" class="btn btn-danger">Удалить портфель</a>
                 </div>
             {% endif %}
         </div>

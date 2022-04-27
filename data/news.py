@@ -17,6 +17,8 @@ class News(SqlAlchemyBase):
     money = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     id_file = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     tikets = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    yield_persent = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+
     user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
     user = orm.relation('User')
     categories = orm.relation("Category", secondary="association", backref="news")
