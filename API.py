@@ -9,7 +9,7 @@ from flask_restful import Resource
 from flask_restful import reqparse
 from stoks import Stock
 import json
-
+from file_portfel import csv_file
 import os
 import datetime as dt
 
@@ -78,8 +78,6 @@ class Briefcase(Resource):
         profit = stock.profit()
         volatility = stock.volatility()
 
-
-
         db_sess = db_session.create_session()
         news = News()
         current_user = db_sess.query(User).filter(User.id == data['id_user']).first()
@@ -95,7 +93,6 @@ class Briefcase(Resource):
         current_user.news.append(news)
         db_sess.merge(current_user)
         db_sess.commit()
-
 
         dict_data = {
             'success': 'OK',
@@ -118,6 +115,7 @@ class Briefcase(Resource):
                 f"json_data/{current_user.id}_{db_sess.query(News).filter(News.user_id == data['id_user'])[-1].id}.json",
                 'w') as cat_file:
             json.dump(dict_data, cat_file)
+        csv_file(current_user.name, dict_data, db_sess.query(News).filter(News.user_id == data['id_user'])[-1].id)
         return jsonify(dict_data)
 
 

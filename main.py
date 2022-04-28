@@ -8,6 +8,9 @@ from data.news import News
 from data.users import User
 from data import db_session
 import json
+from info_main.course_val import get_course
+from info_main.brokers import get_brokers
+from info_main.up_down import get_liders
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 db_session.global_init("db/finanse.db")
@@ -98,8 +101,7 @@ def info(id):
         #       f'\n💵 Остаток средств(Волантильность) - {stoks.get("volatility").get("balance")}\n' + \
         #       f'\n📅 Дата формирования портфелей: {data["time"]}\n' + \
         #       f'\n💰 Годовой доход: {data["yield"]}'
-        print(price)
-    return render_template('Site2/index.html', list_sharp=price, list_vol=price_vol)
+    return render_template('Site2/index.html', list_sharp=price, list_vol=price_vol, path_csv=f'/static/csv_port/portfolio_stoks_{flask_login.current_user.name}_{id}.csv')
 
 
 
@@ -151,8 +153,7 @@ def edit_news(id):
         for v, k in stoks.get('volatility').get('stoks_and_count').items():
             s = [v, k]
             price_vol.append(s)
-        print(price)
-    return render_template('Site2/index.html', list_sharp=price, list_vol=price_vol)
+    return render_template('Site2/index.html', list_sharp=price, list_vol=price_vol, path_csv=f'/static/csv_port/portfolio_stoks_{flask_login.current_user.name}_{id}.csv')
 
 
     # return render_template('news.html', title='Редактирование новости', form=form)
@@ -210,12 +211,13 @@ def login():
 @app.route('/main_page', methods=['GET', 'POST'])
 @login_required
 def main_page():
+    list_course = get_course()
+    # list_brokers = get_brokers()
+    # print(len(list_brokers))
+    kort_up_down = get_liders()
     db_sess = db_session.create_session()
-    if current_user.is_authenticated:
-        news = db_sess.query(News).filter((News.user == current_user) | (News.is_private != True))
-    else:
-        news = db_sess.query(News).filter(News.is_private != True)
-    return render_template("index.html", news=news)
+    news = db_sess.query(News).filter((News.user == current_user))
+    return render_template("index.html", news=news, list_course=list_course, list_up=kort_up_down[-1], list_down=kort_up_down[0])
 
 
 
