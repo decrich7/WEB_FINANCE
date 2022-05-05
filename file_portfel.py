@@ -1,8 +1,4 @@
 import csv
-import datetime as dt
-from requests import post
-
-
 
 
 def csv_file(name, data, id_stoks):
@@ -17,3 +13,7 @@ def csv_file(name, data, id_stoks):
                              *data['stoks']['sharp']['stoks_and_count'].values(),
                              data['stoks']['volatility']["balance"],
                              *data['stoks']['volatility']['stoks_and_count'].values()])
+
+
+
+

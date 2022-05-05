@@ -39,12 +39,12 @@ class Stock():
             self.dict_minv[i] = int(j)
         return self.dict_minv, "{:.2f}".format(rem_minv)
 
-    def plot_equal_volatility(self):
+    def plot_equal_volatility(self, id_user):
         fig, ax = plt.subplots()
         ax.pie(self.dict_minv.values(), labels=self.dict_minv.keys(), autopct='%1.1f%%', rotatelabels=True)
         ax.axis("equal")
-        plt.savefig('plot_equal_volatility.png')
-        return 'plot_equal_volatility.png'
+        plt.savefig(f'static/plot/plot_equal_volatility_{id_user}.png')
+        return f'static/plot/plot_equal_volatility_{id_user}.png'
 
     def sharp(self):
         allocation_shp, rem_shp = DiscreteAllocation(self.sharpe_pwt, self.latest_prices,
@@ -54,20 +54,20 @@ class Stock():
             self.dict_shp[i] = int(j)
         return self.dict_shp, "{:.2f}".format(rem_shp)
 
-    def plot_equal_sharp(self):
+    def plot_equal_sharp(self, id_user):
         fig, ax = plt.subplots()
         ax.pie(self.dict_shp.values(), labels=self.dict_shp.keys(), autopct='%1.1f%%', rotatelabels=True)
         ax.axis("equal")
-        plt.savefig('plot_equal_sharp.png')
-        return 'plot_equal_sharp.png'
+        plt.savefig(f'static/plot/plot_equal_sharp_{id_user}.png')
+        return f'static/plot/plot_equal_sharp_{id_user}.png'
 
-    def plot(self):
+    def plot(self, id_user):
         cl_obj = CLA(self.mu, self.Sigma)
         ax = pplt.plot_efficient_frontier(cl_obj, showfig=False)
         ax.xaxis.set_major_formatter(FuncFormatter(lambda x, _: '{:.0%}'.format(x)))
         ax.yaxis.set_major_formatter(FuncFormatter(lambda y, _: '{:.0%}'.format(y)))
-        plt.savefig('plot.png')
-        return 'plot.png'
+        plt.savefig(f'static/plot/plot_{id_user}.png')
+        return f'static/plot/plot_{id_user}.png'
 
 # a = Stock(1000)
 # print(a.volatility())

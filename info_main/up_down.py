@@ -18,11 +18,7 @@ def get_liders():
         ld_up.append(msg)
 
     for lead in leaders_down:
-        # msg = f'📌 Название акционерного общества: {lead.get("shortName")}<br>' + \
-        #       f'⬇   Изменение цены: {round(float(lead.get("change")), 2)} %<br>' + \
-        #       f'💵  Цена акции: {float(lead.get("value"))} ₽<br>' + \
-        #       f'🔎  Подробная информация - ' + 'https://bcs-express.ru/kotirovki-i-grafiki' + lead.get(
-        #     "hyperlink") + '<br>'
+
         msg = [lead.get("shortName"),round(float(lead.get("change")), 2), float(lead.get("value")),
                'https://bcs-express.ru/kotirovki-i-grafiki' + lead.get(
             "hyperlink")]
@@ -32,4 +28,3 @@ def get_liders():
     return (ld_up[:5], ld_down[:5])
 
 
-print(get_liders()[-1])

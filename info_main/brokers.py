@@ -11,7 +11,6 @@ def get_brokers():
     soup = BeautifulSoup(response, 'lxml')
     s_list = list()
     br = soup.find_all('div', class_='style_row__uzjMQ style_mainGrid__mhMKz')
-    print(len(br))
     for b in br[:11]:
         print(1)
         print(b.find('div', class_='style_column__HWYzl').find('span', class_='style_caption__cqSsy'))
